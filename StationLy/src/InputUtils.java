@@ -2,6 +2,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InputUtils {
@@ -10,28 +11,20 @@ public class InputUtils {
     public static String inConfirm(String inMsg){
         String s="";
         boolean c=false;
-        try (Scanner in = new Scanner(System.in);) {
-            do {
-                System.out.print(inMsg);
-                s = in.nextLine();
-                c = yesNo("Hai inserito " + s + ". È corretto? (S/N) ");
-            } while (!c);
-        } catch (Exception e) {
-            System.out.println("An error occured.\n"+e);
-        }
-
+        Scanner in = new Scanner(System.in);
+        do {
+            System.out.print(inMsg);
+            s = in.nextLine();
+            c = yesNo("Hai inserito " + s + ". È corretto? (S/N) ");
+        } while (!c);
         return s;
     }
 
     public static String inString(String inMsg){
         String s="";
-        try (Scanner in = new Scanner(System.in);) {
-            System.out.print(inMsg);
-            s = in.nextLine();
-        } catch (Exception e) {
-            System.out.println("An error occured.\n"+e);
-        }
-
+        Scanner in = new Scanner(System.in);
+        System.out.print(inMsg);
+        s = in.nextLine();
         return s;
     }
 
@@ -42,20 +35,17 @@ public class InputUtils {
         boolean yn = false;
         String userInput = "";
         boolean e = false;
-        try (Scanner in = new Scanner(System.in)) {
-            do {
-                System.out.print(inMsg);
-                e=false;
-                userInput = in.nextLine();
-                if (userInput.equalsIgnoreCase("s") || userInput.equalsIgnoreCase("n")) {
-                    yn = userInput.equalsIgnoreCase("s"); //Ritorna true/false.
-                } else {
-                    e=true;
-                }
-            } while (e);
-        } catch (Exception ex) {
-            System.out.println("An error occured.\n"+ex);
-        }
+        Scanner in = new Scanner(System.in);
+        do {
+            System.out.print(inMsg);
+            e=false;
+            userInput = in.nextLine();
+            if (userInput.equalsIgnoreCase("s") || userInput.equalsIgnoreCase("n")) {
+                yn = userInput.equalsIgnoreCase("s"); //Ritorna true/false.
+            } else {
+                e=true;
+            }
+        } while (e);
         
         return yn;
     }
@@ -114,12 +104,9 @@ public class InputUtils {
     }
 
     public static void enterToContinue() {
-        try (Scanner in = new Scanner(System.in)) {
-            System.out.print("Premi enter per continuare . . .");
-            in.nextLine();
-        } catch (Exception e) {
-            System.out.println("An error occured.\n"+e);
-        }
+        Scanner in = new Scanner(System.in);
+        System.out.print("Premi enter per continuare . . .");
+        in.nextLine();
     }
 
     //Display a simple menu
@@ -134,7 +121,31 @@ public class InputUtils {
 
             s = InputUtils.inInt("Seleziona un'opzione: ");
 
-            v = !(s<1 || s > options.length);   
+            v = !(s<1 || s > options.length);
+            if (!v) {
+                System.out.println("Scelta non valida. Riprova");
+            }
+        }
+
+        return s;
+    }
+
+    //Display a simple menu but with arrayList
+    public static int menuArrayList(ArrayList<String> options){
+        boolean v = false;
+        int s = 0;
+
+        while (!v) {
+            for (int i = 0; i < options.size(); i++) {
+                System.out.println( "[ "+(i+1)+" ] "+options.get(i)+"\n");
+            }
+
+            s = InputUtils.inInt("Seleziona un'opzione: ");
+
+            v = !(s<1 || s > options.size());
+            if (!v) {
+                System.out.println("Scelta non valida. Riprova");
+            }
         }
 
         return s;
