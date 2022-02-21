@@ -34,6 +34,10 @@ public class Train {
         return seats;
     }
 
+    //TODO: Funzione che fa scendere tutti quelli che devono scendere
+        //Ritorna un ArrayList di Ticket che contiene i ticket scesi.
+    
+
     public Train(ArrayList<String> stations, int max, File f) {
         this.file = f;
         this.seats = new ArrayList<>(Arrays.asList(new Ticket[max]));

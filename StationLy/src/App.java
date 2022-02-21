@@ -38,7 +38,7 @@ public class App {
         boolean exit = false;
 
         // Max seats for a train
-        final int MAX_SEATS = 2;
+        final int MAX_SEATS = 10;
 
         // Get date and time as string for logfile
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss"));
