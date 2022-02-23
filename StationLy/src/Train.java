@@ -62,15 +62,17 @@ public class Train {
             }
         }
         this.seats.removeAll(dropped);
+
+        //Logging
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         if (!dropped.isEmpty()) {
             String str = "["+now+"] Ticket fuori dal treno: ";
+            ArrayList<String> names = new ArrayList<>();
             for (Ticket ticket : dropped) {
-                System.out.println(ticket.getName());
-                str = str + ", " + ticket.getName();
+                names.add(ticket.getName());
             }
+            str = str + names.toString();
             this.fileWrite.write(str+"\n");
-            InputUtils.enterToContinue();
         }
         return dropped;
     }
