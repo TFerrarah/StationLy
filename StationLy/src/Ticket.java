@@ -16,4 +16,8 @@ public class Ticket {
     public String getDest(){
         return this.destination;
     }
+
+    public String getName(){
+        return this.fName + " " + this.lName;
+    }
 }

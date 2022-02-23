@@ -45,7 +45,7 @@ public class App {
         boolean exit = false;
 
         // Max seats for a train
-        final int MAX_SEATS = 1;
+        final int MAX_SEATS = 4;
 
         // Get date and time as string for logfile
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss"));
@@ -75,8 +75,10 @@ public class App {
                 trenoBellissimo.writePos(st);
 
                 // Controlla chi deve scendere
+                trenoBellissimo.drop(st);
 
                 // Controlla chi deve salire
+                // trenoBellissimo.hop(st);
 
                 // Titolone supremo
                 clrscrn();

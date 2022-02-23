@@ -41,14 +41,32 @@ public class Train {
 
     public void writePos(String st) throws IOException{
         fileWrite.flush();
-        System.out.println("DEBUG: Scrivo su file la posizione...");
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         this.fileWrite.write("["+now+"] Arrivato in stazione di "+st+"\n");
-        InputUtils.enterToContinue();
     }
 
-    //TODO: Funzione che fa scendere tutti quelli che devono scendere
+    //Funzione che fa scendere tutti quelli che devono scendere
         //Ritorna un ArrayList di Ticket che contiene i ticket scesi.
+    public ArrayList<Ticket> drop(String st) throws IOException{
+        ArrayList<Ticket> dropped = new ArrayList<>();
+        for (Ticket ticket : this.seats) {
+            if (ticket !=null && ticket.getDest().equals(st)) {
+                dropped.add(ticket);
+            }
+        }
+        this.seats.removeAll(dropped);
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        if (!dropped.isEmpty()) {
+            String str = "["+now+"] Ticket fuori dal treno: ";
+            for (Ticket ticket : dropped) {
+                System.out.println(ticket.getName());
+                str = str + ", " + ticket.getName();
+            }
+            this.fileWrite.write(str+"\n");
+            InputUtils.enterToContinue();
+        }
+        return dropped;
+    }
     
 
     public Train(ArrayList<String> stations, int max, File f) throws IOException {
