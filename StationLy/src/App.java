@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+class NoFreeSeats extends Exception {
+    public NoFreeSeats(String errorMessage) {
+        super(errorMessage);
+    }
+}
+
 public class App {
 
     // Display train ascii art
@@ -38,7 +44,7 @@ public class App {
         boolean exit = false;
 
         // Max seats for a train
-        final int MAX_SEATS = 10;
+        final int MAX_SEATS = 1;
 
         // Get date and time as string for logfile
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss"));
@@ -57,7 +63,7 @@ public class App {
                 }
 
                 oldPos = st;
-               
+
                 // Controlla chi deve scendere
 
                 // Controlla chi deve salire
@@ -82,7 +88,7 @@ public class App {
                     options.add("Crea nuovo ticket");
                 }
 
-                // Solo se sei ad un capolinea e il file di log non è vuoto
+                // TODO: Solo se sei ad un capolinea e il file di log non è vuoto
                 if (st.equals(stations.get(0)) || st.equals(stations.get(stations.size() - 1))) {
                     // Chiedi di fermare il trambo
                     options.add("Fine della corsa.");
@@ -96,78 +102,88 @@ public class App {
 
                 switch (sel) {
                     case 1:
-                        System.out.println("Manda avanti il treno");
+                        // manda avanti il treno
                         break;
                     case 2:
-                        // Chiedere se inserire nuovo biglietto
+                        // Il case 2 può essere sia "Crea un nuovo ticket", che "Fine della corsa."
+                        //  è stato creato questo controllo un po' hardcoded per evitare scelte non corrispondenti
+                        if (options.get(1).equals("Crea nuovo ticket")) {
+                            // Chiedere se inserire nuovo biglietto
 
-                        // Condizione per chiedere se inserire nuovo ticket
-                        boolean addNew = true;
+                            // Condizione per chiedere se inserire nuovo ticket
+                            boolean addNew = true;
 
-                        while (trenoBellissimo.getFreeSeats() > 0 && addNew) {
-                            System.out.println("Ci sono ancora " + trenoBellissimo.getFreeSeats() + " posti liberi");
-                            if (InputUtils.yesNo("Vuoi creare un nuovo biglietto? (S/N)")) {
-                                // Crea un nuovo biglietto
+                            while (trenoBellissimo.getFreeSeats() > 0 && addNew) {
+                                System.out
+                                        .println("Ci sono ancora " + trenoBellissimo.getFreeSeats() + " posti liberi");
+                                if (InputUtils.yesNo("Vuoi creare un nuovo biglietto? (S/N)")) {
+                                    // Crea un nuovo biglietto
 
-                                // Chiedi nome
-                                String name = InputUtils.inString("Nome: ");
-                                // Chiedi cognome
-                                String sname = InputUtils.inString("Cognome: ");
-                                // Chiedi destinazione
-                                boolean destValid = true;
-                                boolean sameDest = true;
-                                String dest = "";
-                                do {
-                                    dest = InputUtils.inString("Destinazione: ");
+                                    // Chiedi nome
+                                    String name = InputUtils.inString("Nome: ");
+                                    // Chiedi cognome
+                                    String sname = InputUtils.inString("Cognome: ");
+                                    // Chiedi destinazione
+                                    boolean destValid = true;
+                                    boolean sameDest = true;
+                                    String dest = "";
+                                    do {
+                                        dest = InputUtils.inString("Destinazione: ");
 
-                                    // Capitalize user input
-                                    // Capitalize first char
-                                    dest = dest.substring(0, 1).toUpperCase()
-                                            + dest.toLowerCase().substring(1, dest.length());
+                                        // Capitalize user input
+                                        // Capitalize first char
+                                        dest = dest.substring(0, 1).toUpperCase()
+                                                + dest.toLowerCase().substring(1, dest.length());
 
-                                    // Find dest in existing destinations
-                                    destValid = stations.contains(dest);
-                                    if (!destValid) {
-                                        System.out.println("Destinazione non valida. Riprova\n");
-                                    }
+                                        // Find dest in existing destinations
+                                        destValid = stations.contains(dest);
+                                        if (!destValid) {
+                                            System.out.println("Destinazione non valida. Riprova\n");
+                                        }
 
-                                    // check if destination entered is equal to current station
-                                    sameDest = !dest.equals(st);
-                                    if (!sameDest) {
-                                        System.out.println("Bro sei già a destinazione. Riprova");
-                                    }
+                                        // check if destination entered is equal to current station
+                                        sameDest = !dest.equals(st);
+                                        if (!sameDest) {
+                                            System.out.println("Bro sei già a destinazione. Riprova");
+                                        }
 
-                                    if (dest.equalsIgnoreCase("napoli")) {
-                                        System.out.println(
-                                                "Non sarebbe il massimo far derubare i passeggieri.....evitiamo");
-                                    }
+                                        if (dest.equalsIgnoreCase("napoli")) {
+                                            System.out.println(
+                                                    "Non sarebbe il massimo far derubare i passeggieri.....evitiamo");
+                                        }
 
-                                    if (dest.equalsIgnoreCase("caserta")) {
-                                        System.out.println(
-                                                "C'è un luogo e un tempo per bruciare le scuole, \nma non è questo il tempo o il luogo!");
-                                    }
-                                } while (!destValid || !sameDest);
+                                        if (dest.equalsIgnoreCase("caserta")) {
+                                            System.out.println(
+                                                    "C'è un luogo e un tempo per bruciare le scuole, \nma non è questo il tempo o il luogo!");
+                                        }
+                                    } while (!destValid || !sameDest);
 
-                                // Chiedi priority
-                                String[] priorities = { "Economy", "Business" };
-                                System.out.println("Priorità:");
-                                int priority = InputUtils.menu(priorities);
+                                    // Chiedi priority
+                                    String[] priorities = { "Economy", "Business" };
+                                    System.out.println("Priorità:");
+                                    int priority = InputUtils.menu(priorities);
 
-                                // Tutti i dati sono stati recuperati
+                                    // Tutti i dati sono stati recuperati
 
-                                // Aggiungi il nuovo ticker
-                                trenoBellissimo.addTicket(new Ticket(dest, name, sname, priority));
-                            } else {
-                                addNew = false;
+                                    // Aggiungi il nuovo ticker
+                                    trenoBellissimo.addTicket(new Ticket(dest, name, sname, priority));
+                                } else {
+                                    addNew = false;
+                                }
+
                             }
-
                         }
-
+                        else{
+                            System.out.println("Attenzione!\nStai per terminare l'esecuzione del programma.");
+                            exit = InputUtils.yesNo("Vuoi davvero farlo? (S/N)");
+                            System.out.println(exit ? "Fermo il treno e salvo i dati...\nNon spegnere il computer." : "Annullato!");
+                        }
                         break;
 
                     case 3:
-                        System.out.println("Ferma il treno");
-                        exit = true;
+                        System.out.println("Attenzione!\nStai per terminare l'esecuzione del programma.");
+                        exit = InputUtils.yesNo("Vuoi davvero farlo? (S/N)");
+                        System.out.println(exit ? "Fermo il treno e salvo i dati...\nNon spegnere il computer." : "Annullato!");
                         break;
                     default:
                         System.out.println("L muert d la filippin");
@@ -176,7 +192,6 @@ public class App {
             }
             Collections.reverse(stations);
         } while (!exit);
-        
 
         clrscrn();
         System.out.println("padania libera");
