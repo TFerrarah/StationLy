@@ -88,7 +88,7 @@ public class Train {
 
     public void end() throws IOException{
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-        String str = "["+now+"] padania liberata.\nStation.Ly 1.0.4\nCreated by T_Ferrarah and Luca-Landri and SuperBoyR3d\nFine del file di LOG.";
+        String str = "["+now+"] padania liberata. (Se vedi questo, il treno ha scelto questo capolinea per fermarsi))\n\nStation.Ly 1.0.4 Logfile\nCreated by T_Ferrarah, Luca-Landri and SuperBoyR3d\nFine del file di LOG.";
         fileWrite.write(str);
         fileWrite.flush();
     }
