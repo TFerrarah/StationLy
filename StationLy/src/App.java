@@ -197,7 +197,7 @@ public class App {
                                 exit ? "Fermo il treno e salvo i dati...\nNon spegnere il computer." : "Annullato!");
                         break;
                     default:
-                        System.out.println("L muert d la filippin");
+                        System.out.println("E tu che ci fai qui?");
                         break;
                 }
             }
