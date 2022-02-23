@@ -52,10 +52,10 @@ public class App {
 
         // returns 20022022131754
 
-        //Initialize directories
+        // Initialize directories
         File testFile = new File("./StationLy/logs");
         testFile.mkdirs();
-        
+
         // Initialize train obj
         Train trenoBellissimo = new Train(stations, MAX_SEATS, new File("./StationLy/logs/log_" + dateTime + ".txt"));
 
@@ -68,17 +68,6 @@ public class App {
                 }
 
                 oldPos = st;
-
-                //Scrittura su file
-
-                //Scrivi la posizione corrente
-                trenoBellissimo.writePos(st);
-
-                // Controlla chi deve scendere
-                trenoBellissimo.drop(st);
-
-                // Controlla chi deve salire
-                // trenoBellissimo.hop(st);
 
                 // Titolone supremo
                 clrscrn();
@@ -100,11 +89,19 @@ public class App {
                     options.add("Crea nuovo ticket");
                 }
 
-                // TODO: Solo se sei ad un capolinea e il file di log non è vuoto
-                if (st.equals(stations.get(0)) || st.equals(stations.get(stations.size() - 1))) {
+                // Solo se sei ad un capolinea (Prima o ultima stazione) e il file di log non è vuoto
+                if ((st.equals(stations.get(0)) || st.equals(stations.get(stations.size() - 1))) && !trenoBellissimo.hasJustStarted()) {
                     // Chiedi di fermare il trambo
                     options.add("Fine della corsa.");
                 }
+
+                // Scrittura su file
+
+                // Scrivi la posizione corrente
+                trenoBellissimo.writePos(st);
+
+                // Controlla chi deve scendere
+                trenoBellissimo.drop(st);
 
                 // Optioni inizializzate con successo.
 
@@ -118,7 +115,8 @@ public class App {
                         break;
                     case 2:
                         // Il case 2 può essere sia "Crea un nuovo ticket", che "Fine della corsa."
-                        //  è stato creato questo controllo un po' hardcoded per evitare scelte non corrispondenti
+                        // è stato creato questo controllo un po' hardcoded per evitare scelte non
+                        // corrispondenti
                         if (options.get(1).equals("Crea nuovo ticket")) {
                             // Chiedere se inserire nuovo biglietto
 
@@ -184,18 +182,19 @@ public class App {
                                 }
 
                             }
-                        }
-                        else{
+                        } else {
                             System.out.println("Attenzione!\nStai per terminare l'esecuzione del programma.");
                             exit = InputUtils.yesNo("Vuoi davvero farlo? (S/N)");
-                            System.out.println(exit ? "Fermo il treno e salvo i dati...\nNon spegnere il computer." : "Annullato!");
+                            System.out.println(exit ? "Fermo il treno e salvo i dati...\nNon spegnere il computer."
+                                    : "Annullato!");
                         }
                         break;
 
                     case 3:
                         System.out.println("Attenzione!\nStai per terminare l'esecuzione del programma.");
                         exit = InputUtils.yesNo("Vuoi davvero farlo? (S/N)");
-                        System.out.println(exit ? "Fermo il treno e salvo i dati...\nNon spegnere il computer." : "Annullato!");
+                        System.out.println(
+                                exit ? "Fermo il treno e salvo i dati...\nNon spegnere il computer." : "Annullato!");
                         break;
                     default:
                         System.out.println("L muert d la filippin");

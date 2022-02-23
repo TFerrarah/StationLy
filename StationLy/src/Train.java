@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -6,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Scanner;
 
 class NoFreeSeats extends Exception {
     public NoFreeSeats(String err){
@@ -25,14 +27,19 @@ public class Train {
         return Collections.frequency(seats, null);
     }
 
-    public void addTicket(Ticket t) throws NoFreeSeats{
+    public void addTicket(Ticket t) throws NoFreeSeats, IOException{
         if (getFreeSeats() == 0) {
             System.out.println("Non ci sono posti disponibili.");
             //Throw exception
-            throw new NoFreeSeats("errore nella richiesta di posto");
+            throw new NoFreeSeats("Non ci sono posti disponibili.");
         }
         // Add ticket to first empty (null) position
         seats.set(seats.indexOf(null), t);
+
+        //Log ticket
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        String str = "["+now+"] Creato un biglietto: \n\tNome: "+t.getfName()+"\n\tCognome: "+t.getlName()+"\n\tPriority: Level "+t.getPriority()+"\n\tDestinazione: "+t.getDest()+"\n";
+        this.fileWrite.write(str);
     }
 
     public ArrayList<Ticket> getTickets() {
@@ -66,6 +73,11 @@ public class Train {
             InputUtils.enterToContinue();
         }
         return dropped;
+    }
+
+    public boolean hasJustStarted() throws FileNotFoundException{
+        Scanner r = new Scanner(this.file);
+        return !r.hasNextLine();
     }
     
 
