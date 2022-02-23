@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -59,6 +58,7 @@ public class App {
         // Initialize train obj
         Train trenoBellissimo = new Train(stations, MAX_SEATS, new File("./StationLy/logs/log_" + dateTime + ".txt"));
 
+
         String oldPos = "";
         do {
             for (String st : stations) {
@@ -95,15 +95,16 @@ public class App {
                     options.add("Fine della corsa.");
                 }
 
+                // Optioni inizializzate con successo.
+
                 // Scrittura su file
 
                 // Scrivi la posizione corrente
                 trenoBellissimo.writePos(st);
+                System.out.println("Scritto nel file "+st);
 
                 // Controlla chi deve scendere
                 trenoBellissimo.drop(st);
-
-                // Optioni inizializzate con successo.
 
                 // Mostra il menu
 
@@ -205,6 +206,7 @@ public class App {
         } while (!exit);
 
         clrscrn();
-        System.out.println("padania libera");
+        trenoBellissimo.fileWrite.write("mammt");
+        System.out.println("padania liberata");
     }
 }

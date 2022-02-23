@@ -35,11 +35,12 @@ public class Train {
         }
         // Add ticket to first empty (null) position
         seats.set(seats.indexOf(null), t);
-
+        
         //Log ticket
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         String str = "["+now+"] Creato un biglietto: \n\tNome: "+t.getfName()+"\n\tCognome: "+t.getlName()+"\n\tPriority: Level "+t.getPriority()+"\n\tDestinazione: "+t.getDest()+"\n";
         this.fileWrite.write(str);
+        fileWrite.flush();
     }
 
     public ArrayList<Ticket> getTickets() {
@@ -47,9 +48,9 @@ public class Train {
     }
 
     public void writePos(String st) throws IOException{
-        fileWrite.flush();
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         this.fileWrite.write("["+now+"] Arrivato in stazione di "+st+"\n");
+        fileWrite.flush();
     }
 
     //Funzione che fa scendere tutti quelli che devono scendere
@@ -74,12 +75,22 @@ public class Train {
             str = str + names.toString();
             this.fileWrite.write(str+"\n");
         }
+        fileWrite.flush();
         return dropped;
     }
 
     public boolean hasJustStarted() throws FileNotFoundException{
         Scanner r = new Scanner(this.file);
-        return !r.hasNextLine();
+        boolean res = !r.hasNextLine();
+        r.close();
+        return res;
+    }
+
+    public void end() throws IOException{
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        String str = "["+now+"] padania liberata.\nStation.Ly 1.0.4\nCreated by T_Ferrarah and Luca-Landri and SuperBoyR3d\nFine del file di LOG.";
+        fileWrite.write(str);
+        fileWrite.flush();
     }
     
 
