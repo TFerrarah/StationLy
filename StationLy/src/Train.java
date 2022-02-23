@@ -1,4 +1,8 @@
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,6 +17,7 @@ public class Train {
     private ArrayList<Ticket> seats;
     private ArrayList<String> stations;
     private File file;
+    FileWriter fileWrite;
 
     public int getFreeSeats() {
         // Collections.frequency returns how many times the obj in second argument is
@@ -34,12 +39,21 @@ public class Train {
         return seats;
     }
 
+    public void writePos(String st) throws IOException{
+        fileWrite.flush();
+        System.out.println("DEBUG: Scrivo su file la posizione...");
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        this.fileWrite.write("["+now+"] Arrivato in stazione di "+st+"\n");
+        InputUtils.enterToContinue();
+    }
+
     //TODO: Funzione che fa scendere tutti quelli che devono scendere
         //Ritorna un ArrayList di Ticket che contiene i ticket scesi.
     
 
-    public Train(ArrayList<String> stations, int max, File f) {
+    public Train(ArrayList<String> stations, int max, File f) throws IOException {
         this.file = f;
+        this.fileWrite = new FileWriter(f);
         this.seats = new ArrayList<>(Arrays.asList(new Ticket[max]));
         this.stations = stations;
     }

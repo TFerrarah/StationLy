@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class App {
         System.out.println("              Station.ly version 1.2");
     }
 
-    public static void main(String[] args) throws NoFreeSeats {
+    public static void main(String[] args) throws Exception { // throws IOException, NoFreeSeats
         // Inizialmente avevo pensato di creare la classe "Stazione"
         // Station[6] stations = {new Station("Bari"), new Station("Foggia"), new
         // Station("Pescara"), ...}
@@ -51,18 +52,27 @@ public class App {
 
         // returns 20022022131754
 
+        //Initialize directories
+        File testFile = new File("./StationLy/logs");
+        testFile.mkdirs();
+        
         // Initialize train obj
-        Train trenoBellissimo = new Train(stations, MAX_SEATS, new File("/logs/log_" + dateTime));
+        Train trenoBellissimo = new Train(stations, MAX_SEATS, new File("./StationLy/logs/log_" + dateTime + ".txt"));
 
         String oldPos = "";
         do {
             for (String st : stations) {
                 // Salva posizione per evitare reiterazioni inutili
                 if (oldPos.equals(st)) {
-                    continue; // salta iterazione del foreach
+                    continue; // salta iterazione del foreach se la stazione viene ripetuta più volte
                 }
 
                 oldPos = st;
+
+                //Scrittura su file
+
+                //Scrivi la posizione corrente
+                trenoBellissimo.writePos(st);
 
                 // Controlla chi deve scendere
 
