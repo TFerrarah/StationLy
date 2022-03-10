@@ -22,7 +22,7 @@ public class Ticket {
     }
 
     public String getfName() {
-        return fName;
+        return this.fName;
     }
 
     public void setfName(String fName) {
@@ -30,15 +30,11 @@ public class Ticket {
     }
 
     public String getlName() {
-        return lName;
+        return this.lName;
     }
 
     public void setlName(String lName) {
         this.lName = lName;
-    }
-
-    public String getDestination() {
-        return destination;
     }
 
     public void setDestination(String destination) {
@@ -46,7 +42,7 @@ public class Ticket {
     }
 
     public int getPriority() {
-        return priority;
+        return this.priority;
     }
 
     public void setPriority(int priority) {
