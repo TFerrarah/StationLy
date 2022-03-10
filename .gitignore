@@ -4,6 +4,7 @@
 # Log file
 *.log
 /StationLy/logs
+/logs
 
 # BlueJ files
 *.ctxt
