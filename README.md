@@ -6,5 +6,5 @@
  * Tantissime cose
  * Piero was here
 
-#Note:
+# Note:
 this is a school assignment, please don't take it too seriously.
