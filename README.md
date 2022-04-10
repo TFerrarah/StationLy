@@ -5,3 +5,6 @@
  <h5>In cosa può aiutarti Station.ly:</h5>
  * Tantissime cose
  * Piero was here
+
+#Note:
+this is a school assignment, please don't take it too seriously.
